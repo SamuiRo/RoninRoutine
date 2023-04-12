@@ -3,10 +3,9 @@
     "version": "1.0",
     "manifest_version": 3,
     "description": "Adds a form with 2 input fields to any Steam item page.",
-    "icons": {},
-    "permissions": [
-        "file:///*/*"
-    ],
+    "icons": {
+        "128": "icons/icon128.png"
+    },
     "content_scripts": [
         {
             "matches": [
