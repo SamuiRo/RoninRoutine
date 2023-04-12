@@ -1,0 +1,20 @@
+{
+    "name": "RoninRoutine",
+    "version": "1.0",
+    "manifest_version": 3,
+    "description": "Adds a form with 2 input fields to any Steam item page.",
+    "icons": {},
+    "permissions": [
+        "file:///*/*"
+    ],
+    "content_scripts": [
+        {
+            "matches": [
+                "*://steamcommunity.com/*/*"
+            ],
+            "js": [
+                "content.js"
+            ]
+        }
+    ]
+}
