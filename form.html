@@ -1,73 +1,105 @@
 <div class="rrForm">
-    <div class="rrName">RoninRoutine</div>
-    <br>
-    <div class="rrInputBlock">
-        <div class="rrInnerBlock">
-            <label for="input1">BUY Price:</label>
-            <input class="rrInput" type="number" id="input1" name="input1" required>
-        </div>
-        <div class="rrInnerBlock">
-            <label for="input2">SELL Price:</label>
-            <input class="rrInput" type="number" id="input2" name="input2" required>
+    <div class="rrHeader">
+        <div class="rrName">RoninRoutine</div>
+        <div class="rrItem">
+            <p>Status:</p>
+            <p class="rrItemStatus">test</p>
         </div>
     </div>
-    <br>
-    <br>
+    <div class="rrMainBlock">
+        <div class="rrInputRaw">
+            <div class="rrInputBlock">
+                <label for="buyprice">Buy Price*:</label>
+                <input class="rrInput" type="number" id="buyprice" name="buyprice" required>
+            </div>
+            <div class="rrInputBlock">
+                <label for="sellprice">Sell Price*:</label>
+                <input class="rrInput" type="number" id="sellprice" name="sellprice" required>
+            </div>
+        </div>
+        <br>
+        <div class="rrInputRaw">
+            <div class="rrInputBlock">
+                <label for="amount">Amount:</label>
+                <input class="rrInput" type="number" id="amount" name="amount">
+            </div>
+        </div>
 
+    </div>
+    <br>
     <input class="rrSubmit" type="submit" value="Submit">
 </div>
 
 <style>
+    .rrForm {
+        display: flex;
+        flex-direction: column;
+        background-color: #0f1620;
+        color: #b450f1;
+        padding: 10px 0 0 0;
+        border: 1px solid black;
+        font-size: 24px;
+    }
+
+    .rrHeader {
+        display: flex;
+        justify-content: space-around;
+        font-size: 16px;
+    }
+
     .rrName {
+        color: #b2404b;
         display: flex;
         justify-content: center;
-        font-style: italic;
-        color: rgb(255, 0, 0);
+        align-items: center;
+    }
+
+    .rrItem {
+        width: 20%;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+    }
+
+    .rrItemStatus {
+        color: #4fb5f8;
+    }
+
+    .rrMainBlock {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .rrInputRaw {
+        display: flex;
     }
 
     .rrInputBlock {
         display: flex;
-    }
-
-    .rrInnerBlock {
-        /* height: 60px; */
-        width: 50%;
-        display: flex;
         justify-content: space-around;
+        width: 50%;
     }
 
     .rrInput {
-        height: 1em;
-        border-bottom: 2px Solid rgb(1, 255, 1);
-        color: rgb(255, 0, 170);
-        /* width: 50%; */
-        font-size: 1em;
-        padding: 0;
-        background-color: rgb(0, 0, 0);
-    }
-
-    .rrForm {
-        display: flex;
-        flex-direction: column;
-        /* justify-content: space-between; */
-        /* align-items: center; */
-        background-color: rgb(70, 42, 122);
-        padding: 10px 0 10px 0;
-        /* border: 2px dashed red */
+        outline: none;
+        border: none;
+        background-color: #243038;
+        border-bottom: 1px solid #9b26e6;
+        color: #b450f1;
         font-size: 24px;
+        width: 40%;
     }
 
     .rrSubmit {
         width: 100%;
         text-decoration: none;
-        background: rgb(32, 119, 32);
+        background: #9b26e6;
         padding: 5px;
-        border: 1px Solid rgb(7, 153, 146);
         font-size: 1em;
     }
 
     .rrSubmit:hover {
-        background: rgb(25, 182, 25);
-        color: rgb(138, 2, 2);
+        background: #c983f5;
+        color: rgb(0, 0, 0);
     }
 </style>
