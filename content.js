@@ -2,13 +2,12 @@
 
 const form = document.createElement("form");
 
-
 form.innerHTML = `<div class="rrForm">
 <div class="rrHeader">
     <div class="rrName">RoninRoutine</div>
     <div class="rrItem">
         <p>Status:</p>
-        <p class="rrItemStatus">test</p>
+        <p class="rrItemStatus" id="status"></p>
     </div>
 </div>
 <div class="rrMainBlock">
@@ -89,9 +88,9 @@ form.innerHTML = `<div class="rrForm">
     outline: none;
     border: none;
     background-color: #243038;
-    border-bottom: 1px solid #9b26e6;
-    color: #b450f1;
-    font-size: 24px;
+    border-bottom: 1px solid #9b26e6 !important;
+    color: #b450f1 !important;
+    font-size: 24px !important;
     width: 40%;
 }
 
@@ -109,28 +108,76 @@ form.innerHTML = `<div class="rrForm">
 }
 </style>`;
 
-const container = document.querySelector(".market_commodity_order_block");
-if (container) {
-    container.insertBefore(form, container.firstChild);
+async function init() {
+    try {
+        const appid_match = window.location.pathname.match(/\/(\d+)\//);
+        const appid = appid_match ? appid_match[1] : "";
+        // const hash_name_match = window.location.pathname.match(`/\/market\/listings\/753\/(.*)/`);
+        const hash_name_match = window.location.pathname.match(/\/([^/]+)$/);
+        const market_hash_name = hash_name_match ? hash_name_match[1] : "";
+
+        if (!market_hash_name) return
+
+        const response = await fetch("http://localhost:4141/webhook/ronin?market_hash_name=" + market_hash_name, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            }
+        })
+        const data = await response.json()
+        console.log(data)
+        const decodedString = decodeURIComponent(market_hash_name);
+        console.log(decodedString);
+        // const container = document.querySelector(".market_commodity_order_block");
+        const container = document.querySelector("#searchResultsTable");
+        if (container) {
+            container.insertBefore(form, container.firstChild);
+        }
+        const status = document.getElementById("status")
+        if (!data) {
+            status.innerText = "Fetch ERR"
+        }
+        if (!data.ronin_buy_price || !data.ronin_sell_price) {
+            status.innerText = "Missing"
+        } else {
+            status.innerText = "Checked"
+        }
+
+        const input1 = document.getElementById("buyprice")
+        const input2 = document.getElementById("sellprice")
+        const input3 = document.getElementById("amount")
+
+        input1.value = data.ronin_buy_price ? data.ronin_buy_price : ""
+        input2.value = data.ronin_sell_price ? data.ronin_sell_price : ""
+        input3.value = data.ronin_buy_amount ? data.ronin_buy_amount : ""
+
+        form.addEventListener("submit", (event) => {
+            event.preventDefault()
+
+            const ronin_buy_price = document.getElementById("buyprice").value
+            const ronin_sell_price = document.getElementById("sellprice").value
+            const ronin_buy_amount = document.getElementById("amount").value
+
+
+            console.log({ ronin_buy_price, ronin_sell_price, ronin_buy_amount, market_hash_name: decodedString, appid })
+
+            fetch("http://localhost:4141/webhook/ronin", {
+                method: "POST",
+                body: JSON.stringify({ ronin_buy_price, ronin_sell_price, ronin_buy_amount, market_hash_name, appid }),
+                headers: { "Content-Type": "application/json" },
+            }).then(response => {
+                const status = document.getElementById("status")
+                status.innerText = "Okay"
+            }).catch(error => {
+                const status = document.getElementById("status")
+                status.innerText = "Error"
+            })
+        })
+    } catch (error) {
+        const status = document.getElementById("status")
+        status.innerText = "fetch err"
+        console.log(error)
+    }
 }
 
-fetch("https://jsonplaceholder.typicode.com/posts/1")
-    .then((response) => response.json())
-    .then((json) => console.log(json))
-    .catch(error => { alert(error); console.log(error) })
-
-form.addEventListener("submit", (event) => {
-    event.preventDefault();
-
-    const input1 = document.querySelector("#input1").value;
-    const input2 = document.querySelector("#input2").value;
-
-    const match = window.location.pathname.match(/\/(\d+)\//);
-    const appId = match ? match[1] : "";
-
-    fetch("http://localhost:4141/webhook/ronin", {
-        method: "POST",
-        body: JSON.stringify({ input1, input2, appId }),
-        headers: { "Content-Type": "application/json" },
-    })
-})
+init()
