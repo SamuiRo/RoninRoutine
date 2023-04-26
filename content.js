@@ -128,17 +128,17 @@ async function init() {
         console.log(data)
         const decodedString = decodeURIComponent(market_hash_name);
         console.log(decodedString);
-        // const container = document.querySelector(".market_commodity_order_block");
-        const container = document.querySelector("#searchResultsTable");
+        const container = document.querySelector(".market_commodity_order_block");
+        // const container = document.querySelector("#listings");
         if (container) {
             container.insertBefore(form, container.firstChild);
         }
         const status = document.getElementById("status")
         if (!data) {
-            status.innerText = "Fetch ERR"
+            status.innerText = "Missing"
         }
         if (!data.ronin_buy_price || !data.ronin_sell_price) {
-            status.innerText = "Missing"
+            status.innerText = "Unchecked"
         } else {
             status.innerText = "Checked"
         }
@@ -175,7 +175,7 @@ async function init() {
         })
     } catch (error) {
         const status = document.getElementById("status")
-        status.innerText = "fetch err"
+        status.innerText = "Fetch ERR"
         console.log(error)
     }
 }
