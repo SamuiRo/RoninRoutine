@@ -1,5 +1,3 @@
-
-
 const form = document.createElement("form");
 
 form.innerHTML = `<div class="rrForm">
@@ -31,6 +29,7 @@ form.innerHTML = `<div class="rrForm">
 
 </div>
 <br>
+
 <input class="rrSubmit" type="submit" value="Submit">
 </div>
 
@@ -110,14 +109,50 @@ form.innerHTML = `<div class="rrForm">
 
 async function init() {
     try {
-        const appid_match = window.location.pathname.match(/\/(\d+)\//);
-        const appid = appid_match ? appid_match[1] : "";
-        // const hash_name_match = window.location.pathname.match(`/\/market\/listings\/753\/(.*)/`);
-        const hash_name_match = window.location.pathname.match(/\/([^/]+)$/);
-        const market_hash_name = hash_name_match ? hash_name_match[1] : "";
+        await init_form()
+
+        console.log()
+        const appid_match = window.location.pathname.match(/\/(\d+)\//)
+        const appid = appid_match ? appid_match[1] : ""
+        const hash_name_match = window.location.pathname.match(/\/([^/]+)$/)
+        const market_hash_name = hash_name_match ? hash_name_match[1] : ""
 
         if (!market_hash_name) return
 
+        const response = await get_status(market_hash_name)
+        const decodedString = decodeURIComponent(market_hash_name)
+
+        const result = await check_status(response)
+        await set_status(result)
+        if (result == "Checked") {
+            await set_ronin_data(response)
+        }
+
+        form.addEventListener("submit", async (event) => {
+            event.preventDefault()
+
+            console.log('Кнопку натиснули!')
+
+            const item = await gather_item_data()
+            await post_item_data(item)
+        })
+
+        // const button = document.getElementById("rrButton")
+        // button.addEventListener("click", async (event) => {
+
+        //     console.log('Кнопку натиснули!')
+
+        //     const item = await gather_item_data()
+        //     await post_item_data(item)
+        // })
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+async function get_status(market_hash_name) {
+    try {
+        console.log("get status")
         const response = await fetch("http://localhost:4141/webhook/ronin?market_hash_name=" + market_hash_name, {
             method: "GET",
             headers: {
@@ -125,57 +160,113 @@ async function init() {
             }
         })
         const data = await response.json()
-        console.log(data)
-        const decodedString = decodeURIComponent(market_hash_name);
-        console.log(decodedString);
+        return data
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+async function init_form() {
+    try {
+        console.log("Create form")
         const container = document.querySelector(".market_commodity_order_block");
         // const container = document.querySelector("#listings");
         if (container) {
             container.insertBefore(form, container.firstChild);
         }
-        const status = document.getElementById("status")
-        if (!data) {
-            status.innerText = "Missing"
-        }
-        if (!data.ronin_buy_price || !data.ronin_sell_price) {
-            status.innerText = "Unchecked"
-        } else {
-            status.innerText = "Checked"
-        }
-
-        const input1 = document.getElementById("buyprice")
-        const input2 = document.getElementById("sellprice")
-        const input3 = document.getElementById("amount")
-
-        input1.value = data.ronin_buy_price ? data.ronin_buy_price : ""
-        input2.value = data.ronin_sell_price ? data.ronin_sell_price : ""
-        input3.value = data.ronin_buy_amount ? data.ronin_buy_amount : ""
-
-        form.addEventListener("submit", (event) => {
-            event.preventDefault()
-
-            const ronin_buy_price = document.getElementById("buyprice").value
-            const ronin_sell_price = document.getElementById("sellprice").value
-            const ronin_buy_amount = document.getElementById("amount").value
-
-
-            console.log({ ronin_buy_price, ronin_sell_price, ronin_buy_amount, market_hash_name: decodedString, appid })
-
-            fetch("http://localhost:4141/webhook/ronin", {
-                method: "POST",
-                body: JSON.stringify({ ronin_buy_price, ronin_sell_price, ronin_buy_amount, market_hash_name, appid }),
-                headers: { "Content-Type": "application/json" },
-            }).then(response => {
-                const status = document.getElementById("status")
-                status.innerText = "Okay"
-            }).catch(error => {
-                const status = document.getElementById("status")
-                status.innerText = "Error"
-            })
-        })
     } catch (error) {
+        console.log(error)
+    }
+}
+
+async function check_status(data) {
+    try {
+        let status = "---"
+        if (data == null) {
+            status = "Missing"
+            return status
+        }
+        if (!data.ronin_buy_price) {
+            status = "Unchecked"
+            return status
+        }
+        if (data.ronin_buy_price && data.ronin_sell_price) {
+            status = "Checked"
+            return status
+        }
+
+        console.log(status)
+        return status
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+async function set_status(data) {
+    try {
         const status = document.getElementById("status")
-        status.innerText = "Fetch ERR"
+        status.innerText = data
+
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+async function set_ronin_data(data) {
+    try {
+        const buyprice = document.getElementById("buyprice")
+        const sellprice = document.getElementById("sellprice")
+        const amount = document.getElementById("amount")
+
+        buyprice.value = data.ronin_buy_price ? data.ronin_buy_price : ""
+        sellprice.value = data.ronin_sell_price ? data.ronin_sell_price : ""
+        amount.value = data.ronin_buy_amount ? data.ronin_buy_amount : ""
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+async function gather_item_data() {
+    try {
+        const appid_match = window.location.pathname.match(/\/(\d+)\//)
+        const appid = appid_match ? appid_match[1] : ""
+
+        const hash_name_match = window.location.pathname.match(/\/([^/]+)$/)
+        const market_hash_name_undecoded = hash_name_match ? hash_name_match[1] : ""
+        const market_hash_name = decodeURIComponent(market_hash_name_undecoded)
+
+        const ronin_buy_price = document.getElementById("buyprice").value
+        const ronin_sell_price = document.getElementById("sellprice").value
+        const ronin_buy_amount = document.getElementById("amount").value
+
+        const img_url = "https://steamcommunity.com" + window.location.pathname
+
+        return {
+            appid,
+            market_hash_name,
+            img_url,
+            ronin_buy_price,
+            ronin_sell_price,
+            ronin_buy_amount
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+async function post_item_data(item) {
+    try {
+        const response = await fetch("http://localhost:4141/webhook/ronin", {
+            method: "POST",
+            body: JSON.stringify(item),
+            headers: { "Content-Type": "application/json" },
+        })
+
+        const data = await response.json()
+        await set_status("Okay")
+        return data
+    } catch (error) {
+        await set_status("Error")
         console.log(error)
     }
 }
