@@ -238,7 +238,6 @@ async function gather_item_data() {
 
         const imgElement = document.querySelector("#mainContents > div.market_page_fullwidth.market_listing_firstsection > div > div > div.market_listing_largeimage > img");
         const img_url = imgElement.getAttribute('src');
-        console.log(srcAttribute)
 
         return {
             appid,
