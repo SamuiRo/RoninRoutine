@@ -111,17 +111,12 @@ async function init() {
     try {
         await init_form()
 
-        console.log()
-        const appid_match = window.location.pathname.match(/\/(\d+)\//)
-        const appid = appid_match ? appid_match[1] : ""
         const hash_name_match = window.location.pathname.match(/\/([^/]+)$/)
         const market_hash_name = hash_name_match ? hash_name_match[1] : ""
 
         if (!market_hash_name) return
 
         const response = await get_status(market_hash_name)
-        const decodedString = decodeURIComponent(market_hash_name)
-
         const result = await check_status(response)
         await set_status(result)
         if (result == "Checked") {
@@ -239,15 +234,20 @@ async function gather_item_data() {
         const ronin_sell_price = document.getElementById("sellprice").value
         const ronin_buy_amount = document.getElementById("amount").value
 
-        const img_url = "https://steamcommunity.com" + window.location.pathname
+        const market_url = "https://steamcommunity.com" + window.location.pathname
+
+        const imgElement = document.querySelector("#mainContents > div.market_page_fullwidth.market_listing_firstsection > div > div > div.market_listing_largeimage > img");
+        const img_url = imgElement.getAttribute('src');
+        console.log(srcAttribute)
 
         return {
             appid,
             market_hash_name,
-            img_url,
+            market_url,
             ronin_buy_price,
             ronin_sell_price,
-            ronin_buy_amount
+            ronin_buy_amount,
+            img_url
         }
     } catch (error) {
         console.log(error)
