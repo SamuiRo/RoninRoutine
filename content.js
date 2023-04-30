@@ -12,18 +12,18 @@ form.innerHTML = `<div class="rrForm">
     <div class="rrInputRaw">
         <div class="rrInputBlock">
             <label for="buyprice">Buy Price*:</label>
-            <input class="rrInput" type="number" id="buyprice" name="buyprice" required>
+            <input class="rrInput" type="text" id="buyprice" name="buyprice" required>
         </div>
         <div class="rrInputBlock">
             <label for="sellprice">Sell Price*:</label>
-            <input class="rrInput" type="number" id="sellprice" name="sellprice" required>
+            <input class="rrInput" type="text" id="sellprice" name="sellprice" required>
         </div>
     </div>
     <br>
     <div class="rrInputRaw">
         <div class="rrInputBlock">
             <label for="amount">Amount:</label>
-            <input class="rrInput" type="number" id="amount" name="amount">
+            <input class="rrInput" type="text" id="amount" name="amount">
         </div>
     </div>
 
@@ -129,7 +129,7 @@ async function init() {
             console.log('Кнопку натиснули!')
 
             const item = await gather_item_data()
-            await post_item_data(item)
+            // await post_item_data(item)
         })
 
         // const button = document.getElementById("rrButton")
@@ -144,6 +144,7 @@ async function init() {
         console.log(error)
     }
 }
+
 
 async function get_status(market_hash_name) {
     try {
@@ -230,9 +231,9 @@ async function gather_item_data() {
         const market_hash_name_undecoded = hash_name_match ? hash_name_match[1] : ""
         const market_hash_name = decodeURIComponent(market_hash_name_undecoded)
 
-        const ronin_buy_price = document.getElementById("buyprice").value
-        const ronin_sell_price = document.getElementById("sellprice").value
-        const ronin_buy_amount = document.getElementById("amount").value
+        const ronin_buy_price = +document.getElementById("buyprice").value
+        const ronin_sell_price = +document.getElementById("sellprice").value
+        const ronin_buy_amount = +document.getElementById("amount").value
 
         const market_url = "https://steamcommunity.com" + window.location.pathname
 
