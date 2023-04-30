@@ -129,7 +129,7 @@ async function init() {
             console.log('Кнопку натиснули!')
 
             const item = await gather_item_data()
-            // await post_item_data(item)
+            await post_item_data(item)
         })
 
         // const button = document.getElementById("rrButton")
