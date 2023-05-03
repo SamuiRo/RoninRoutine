@@ -237,9 +237,26 @@ async function gather_item_data() {
 
         const market_url = "https://steamcommunity.com" + window.location.pathname
 
-        const imgElement = document.querySelector("#mainContents > div.market_page_fullwidth.market_listing_firstsection > div > div > div.market_listing_largeimage > img");
-        const img_url = imgElement.getAttribute('src');
 
+        const imgElement = document.querySelector("#mainContents > div.market_page_fullwidth.market_listing_firstsection > div > div > div.market_listing_largeimage > img");
+        console.log(imgElement)
+        let img_url
+        if (imgElement) {
+            img_url = imgElement.getAttribute('src');
+        } else {
+            img_url = ""
+        }
+
+
+        console.log({
+            appid,
+            market_hash_name,
+            market_url,
+            ronin_buy_price,
+            ronin_sell_price,
+            ronin_buy_amount,
+            img_url
+        })
         return {
             appid,
             market_hash_name,

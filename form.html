@@ -10,28 +10,28 @@
         <div class="rrInputRaw">
             <div class="rrInputBlock">
                 <label for="buyprice">Buy Price*:</label>
-                <input class="rrInput" type="number" id="buyprice" name="buyprice" required>
+                <input class="rrInput" type="text" id="buyprice" name="buyprice" required>
             </div>
             <div class="rrInputBlock">
                 <label for="sellprice">Sell Price*:</label>
-                <input class="rrInput" type="number" id="sellprice" name="sellprice" required>
+                <input class="rrInput" type="text" id="sellprice" name="sellprice" required>
             </div>
         </div>
         <br>
         <div class="rrInputRaw">
             <div class="rrInputBlock">
                 <label for="amount">Amount:</label>
-                <input class="rrInput" type="number" id="amount" name="amount">
+                <input class="rrInput" type="text" id="amount" name="amount">
             </div>
         </div>
-
+    
     </div>
     <br>
-    <button class="rrSubmit" onclick="submit_form()">Submit</button>
+    
     <input class="rrSubmit" type="submit" value="Submit">
-</div>
-
-<style>
+    </div>
+    
+    <style>
     .rrForm {
         display: flex;
         flex-direction: column;
@@ -41,46 +41,46 @@
         border: 1px solid black;
         font-size: 24px;
     }
-
+    
     .rrHeader {
         display: flex;
         justify-content: space-around;
         font-size: 16px;
     }
-
+    
     .rrName {
         color: #b2404b;
         display: flex;
         justify-content: center;
         align-items: center;
     }
-
+    
     .rrItem {
         width: 20%;
         display: flex;
         justify-content: space-around;
         align-items: center;
     }
-
+    
     .rrItemStatus {
         color: #4fb5f8;
     }
-
+    
     .rrMainBlock {
         display: flex;
         flex-direction: column;
     }
-
+    
     .rrInputRaw {
         display: flex;
     }
-
+    
     .rrInputBlock {
         display: flex;
         justify-content: space-around;
         width: 50%;
     }
-
+    
     .rrInput {
         outline: none;
         border: none;
@@ -90,7 +90,7 @@
         font-size: 24px !important;
         width: 40%;
     }
-
+    
     .rrSubmit {
         width: 100%;
         text-decoration: none;
@@ -98,9 +98,9 @@
         padding: 5px;
         font-size: 1em;
     }
-
+    
     .rrSubmit:hover {
         background: #c983f5;
         color: rgb(0, 0, 0);
     }
-</style>
+    </style>
