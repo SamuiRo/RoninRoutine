@@ -24,14 +24,74 @@
                 <input class="rrInput" type="text" id="amount" name="amount">
             </div>
         </div>
-    
+
     </div>
     <br>
-    
-    <input class="rrSubmit" type="submit" value="Submit">
+    <div class="rrPriceBlock">
+        <div class="rrBuyPrice">
+            <div class="rrPriceRaw">
+                <p class="rrPercent">Від найнижчої ціни</p>
+            </div>
+            <div class="rrPriceRaw">
+                <p class="rrPercent">Percent</p>
+                <p class="rrPrice">Price</p>
+            </div>
+            <div class="rrPriceRaw">
+                <p class="rrPercent">-5%</p>
+                <p id="bp1" class="rrPrice copy">---</p>
+            </div>
+            <div class="rrPriceRaw">
+                <p class="rrPercent">-10%</p>
+                <p id="bp2" class="rrPrice copy">---</p>
+            </div>
+            <div class="rrPriceRaw">
+                <p class="rrPercent">-15%</p>
+                <p id="bp3" class="rrPrice copy">---</p>
+            </div>
+            <div class="rrPriceRaw">
+                <p class="rrPercent">-20%</p>
+                <p id="bp4" class="rrPrice copy">---</p>
+            </div>
+            <div class="rrPriceRaw">
+                <p class="rrPercent">-25%</p>
+                <p id="bp5" class="rrPrice copy">---</p>
+            </div>
+        </div>
+        <div class="rrBuyPrice">
+            <div class="rrPriceRaw">
+                <p class="rrPercent">Від найвищого ордера</p>
+            </div>
+            <div class="rrPriceRaw">
+                <p class="rrPercent">Percent</p>
+                <p class="rrPrice">Price</p>
+            </div>
+            <div class="rrPriceRaw">
+                <p class="rrPercent">-5%</p>
+                <p id="sp1" class="rrPrice copy">---</p>
+            </div>
+            <div class="rrPriceRaw">
+                <p class="rrPercent">-10%</p>
+                <p id="sp2" class="rrPrice copy">---</p>
+            </div>
+            <div class="rrPriceRaw">
+                <p class="rrPercent">-15%</p>
+                <p id="sp3" class="rrPrice copy">---</p>
+            </div>
+            <div class="rrPriceRaw">
+                <p class="rrPercent">-20%</p>
+                <p id="sp4" class="rrPrice copy">---</p>
+            </div>
+            <div class="rrPriceRaw">
+                <p class="rrPercent">-25%</p>
+                <p id="sp5" class="rrPrice copy">---</p>
+            </div>
+        </div>
     </div>
-    
-    <style>
+    <br>
+    <input class="rrSubmit" type="submit" value="Submit">
+</div>
+
+<style>
     .rrForm {
         display: flex;
         flex-direction: column;
@@ -41,46 +101,46 @@
         border: 1px solid black;
         font-size: 24px;
     }
-    
+
     .rrHeader {
         display: flex;
         justify-content: space-around;
         font-size: 16px;
     }
-    
+
     .rrName {
         color: #b2404b;
         display: flex;
         justify-content: center;
         align-items: center;
     }
-    
+
     .rrItem {
         width: 20%;
         display: flex;
         justify-content: space-around;
         align-items: center;
     }
-    
+
     .rrItemStatus {
         color: #4fb5f8;
     }
-    
+
     .rrMainBlock {
         display: flex;
         flex-direction: column;
     }
-    
+
     .rrInputRaw {
         display: flex;
     }
-    
+
     .rrInputBlock {
         display: flex;
         justify-content: space-around;
         width: 50%;
     }
-    
+
     .rrInput {
         outline: none;
         border: none;
@@ -90,7 +150,42 @@
         font-size: 24px !important;
         width: 40%;
     }
-    
+
+    .rrPriceBlock {
+        display: flex;
+        width: 100%;
+        font-size: 14px;
+    }
+
+    .rrBuyPrice {
+        display: flex;
+        width: 50%;
+        flex-direction: column;
+        border: solid 1px #9b26e6;
+    }
+
+    .rrPriceRaw {
+        display: flex;
+        width: 100%;
+        justify-content: space-around;
+        border-bottom: dotted 1px rgb(11, 207, 126);
+    }
+
+    .rrPercent {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: wheat;
+    }
+
+    .rrPrice {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: aquamarine;
+        border-bottom: 1px solid aqua;
+    }
+
     .rrSubmit {
         width: 100%;
         text-decoration: none;
@@ -98,9 +193,9 @@
         padding: 5px;
         font-size: 1em;
     }
-    
+
     .rrSubmit:hover {
         background: #c983f5;
         color: rgb(0, 0, 0);
     }
-    </style>
+</style>

@@ -29,7 +29,67 @@ form.innerHTML = `<div class="rrForm">
 
 </div>
 <br>
-
+<div class="rrPriceBlock">
+    <div class="rrBuyPrice">
+        <div class="rrPriceRaw">
+            <p class="rrPercent">Від найнижчої ціни</p>
+        </div>
+        <div class="rrPriceRaw">
+            <p class="rrPercent">Percent</p>
+            <p class="rrPrice">Price</p>
+        </div>
+        <div class="rrPriceRaw">
+            <p class="rrPercent">-5%</p>
+            <p id="bp1" class="rrPrice copy">---</p>
+        </div>
+        <div class="rrPriceRaw">
+            <p class="rrPercent">-10%</p>
+            <p id="bp2" class="rrPrice copy">---</p>
+        </div>
+        <div class="rrPriceRaw">
+            <p class="rrPercent">-15%</p>
+            <p id="bp3" class="rrPrice copy">---</p>
+        </div>
+        <div class="rrPriceRaw">
+            <p class="rrPercent">-20%</p>
+            <p id="bp4" class="rrPrice copy">---</p>
+        </div>
+        <div class="rrPriceRaw">
+            <p class="rrPercent">-25%</p>
+            <p id="bp5" class="rrPrice copy">---</p>
+        </div>
+    </div>
+    <div class="rrBuyPrice">
+        <div class="rrPriceRaw">
+            <p class="rrPercent">Від найвищого ордера</p>
+        </div>
+        <div class="rrPriceRaw">
+            <p class="rrPercent">Percent</p>
+            <p class="rrPrice">Price</p>
+        </div>
+        <div class="rrPriceRaw">
+            <p class="rrPercent">-5%</p>
+            <p id="sp1" class="rrPrice copy">---</p>
+        </div>
+        <div class="rrPriceRaw">
+            <p class="rrPercent">-10%</p>
+            <p id="sp2" class="rrPrice copy">---</p>
+        </div>
+        <div class="rrPriceRaw">
+            <p class="rrPercent">-15%</p>
+            <p id="sp3" class="rrPrice copy">---</p>
+        </div>
+        <div class="rrPriceRaw">
+            <p class="rrPercent">-20%</p>
+            <p id="sp4" class="rrPrice copy">---</p>
+        </div>
+        <div class="rrPriceRaw">
+            <p class="rrPercent">-25%</p>
+            <p id="sp5" class="rrPrice copy">---</p>
+        </div>
+    </div>
+</div>
+<br>
 <input class="rrSubmit" type="submit" value="Submit">
 </div>
 
@@ -93,6 +153,41 @@ form.innerHTML = `<div class="rrForm">
     width: 40%;
 }
 
+.rrPriceBlock {
+    display: flex;
+    width: 100%;
+    font-size: 14px;
+}
+
+.rrBuyPrice {
+    display: flex;
+    width: 50%;
+    flex-direction: column;
+    border: solid 1px #9b26e6;
+}
+
+.rrPriceRaw {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    border-bottom: dotted 1px rgb(11, 207, 126);
+}
+
+.rrPercent {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: wheat;
+}
+
+.rrPrice {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: aquamarine;
+    border-bottom: 1px solid aqua;
+}
+
 .rrSubmit {
     width: 100%;
     text-decoration: none;
@@ -132,6 +227,9 @@ async function init() {
             await post_item_data(item)
         })
 
+        // await get_prices()
+        await set_discount()
+        set_copy_to_clipboard()
         // const button = document.getElementById("rrButton")
         // button.addEventListener("click", async (event) => {
 
@@ -284,6 +382,80 @@ async function post_item_data(item) {
         return data
     } catch (error) {
         await set_status("Error")
+        console.log(error)
+    }
+}
+
+async function get_prices() {
+    try {
+        const lowest_sell_order = +(document.querySelector("#market_commodity_forsale > span:nth-child(2)").textContent).replace("₴", "").replace(",", ".")
+        const hightest_buy_order = +(document.querySelector("#market_commodity_buyrequests > span:nth-child(2)").textContent).replace("₴", "").replace(",", ".")
+        console.log(lowest_sell_order, hightest_buy_order)
+        return {
+            lowest_sell_order,
+            hightest_buy_order
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+async function set_discount() {
+    try {
+        const prices = await get_prices()
+
+        const discounts = [5, 10, 15, 20, 25]
+        const ids = {
+            hightest_buy_order: ["sp1", "sp2", "sp3", "sp4", "sp5"],
+            lowest_sell_order: ["bp1", "bp2", "bp3", "bp4", "bp5"]
+        }
+
+        for (let i = 0; i < discounts.length; i++) {
+            try {
+                const order_discount = document.getElementById(ids.hightest_buy_order[i])
+                const sell_discount = document.getElementById(ids.lowest_sell_order[i])
+                console.log(
+                    order_discount,
+                    sell_discount
+                )
+
+                order_discount.innerText = calculate_discount(discounts[i], prices.hightest_buy_order).discount
+                sell_discount.innerText = calculate_discount(discounts[i], prices.lowest_sell_order).discount
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+function calculate_discount(percent, price) {
+    const discountedPrice = price * (100 - percent) / 100;
+    const savings = price - discountedPrice;
+
+    return {
+        discount: discountedPrice.toFixed(2),
+        savings
+    }
+}
+
+function set_copy_to_clipboard() {
+    try {
+        const elements = document.getElementsByClassName("copy");
+        
+
+        for (let element of elements) {
+            element.addEventListener("click", () => {
+                const text = element.textContent;
+                navigator.clipboard.writeText(text)
+                    .then(() => console.log(`Контент "${text}" скопійовано в буфер обміну.`))
+                    .catch(err => console.error('Не вдалося скопіювати контент: ', err));
+            });
+        }
+
+    } catch (error) {
         console.log(error)
     }
 }
