@@ -340,7 +340,8 @@ async function gather_item_data() {
         console.log(imgElement)
         let img_url
         if (imgElement) {
-            img_url = imgElement.getAttribute('src');
+            // img_url = imgElement.getAttribute('src');
+            img_url = ""
         } else {
             img_url = ""
         }
@@ -425,7 +426,6 @@ async function set_discount() {
                 console.log(error)
             }
         }
-
     } catch (error) {
         console.log(error)
     }
@@ -444,7 +444,6 @@ function calculate_discount(percent, price) {
 function set_copy_to_clipboard() {
     try {
         const elements = document.getElementsByClassName("copy");
-        
 
         for (let element of elements) {
             element.addEventListener("click", () => {
